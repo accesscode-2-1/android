@@ -2,9 +2,11 @@ package com.github.mobile.ui;
 
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_ITEM_MENU;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_ITEM_ORG;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_LOG_OUT;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SUBHEADER;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mobile.R;
+import com.github.mobile.accounts.LoginActivity;
 import com.github.mobile.util.AvatarLoader;
 
 import java.util.ArrayList;
@@ -40,7 +43,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     private void createData() {
         orgs.remove(0);
         String[] names = new String[] { context.getString(R.string.home), context.getString(R.string.gist),
-            context.getString(R.string.issue_dashboard), context.getString(R.string.bookmarks) };
+            context.getString(R.string.issue_dashboard), context.getString(R.string.bookmarks), context.getString(R.string.log_out)};
         String[] icons = context.getResources().getStringArray(R.array.navigation_drawer_icon_list);
         data = new ArrayList<>();
         int amount = names.length + orgs.size() + 2;
@@ -102,6 +105,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
                     convertView.setEnabled(false);
                     convertView.setOnClickListener(null);
                     break;
+
                 default:
                     convertView = inflater.inflate(R.layout.navigation_drawer_list_seperator, parent, false);
                     convertView.setEnabled(false);
