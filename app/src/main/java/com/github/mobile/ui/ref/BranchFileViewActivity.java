@@ -130,8 +130,10 @@ public class BranchFileViewActivity extends BaseActivity implements
         loadingBar = finder.find(R.id.pb_loading);
         codeView = finder.find(R.id.wv_code);
 
-        codeView.getSettings().setBuiltInZoomControls(true);
-        codeView.getSettings().setUseWideViewPort(true);
+//        The default settings supported pinch gestures for zooming in and out
+//        But did not support text wrapping
+//        codeView.getSettings().setBuiltInZoomControls(true);
+//        codeView.getSettings().setUseWideViewPort(true);
 
         file = CommitUtils.getName(path);
         isMarkdownFile = MarkdownUtils.isMarkdown(file);
@@ -177,8 +179,11 @@ public class BranchFileViewActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_wrap:
-                if (editor.getWrap())
+                if (editor.getWrap()) {
                     item.setTitle(R.string.enable_wrapping);
+                    //Modified setting here to toggle between wrap text and unwrap text
+                    codeView.getSettings().setBuiltInZoomControls(true);
+                }
                 else
                     item.setTitle(R.string.disable_wrapping);
                 editor.toggleWrap();
