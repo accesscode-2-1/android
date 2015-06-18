@@ -181,7 +181,7 @@ public class BranchFileViewActivity extends BaseActivity implements
             case R.id.m_wrap:
                 if (editor.getWrap()) {
                     item.setTitle(R.string.enable_wrapping);
-                    //Modified setting here to toggle between wrap text and unwrap text
+                    //Modified setting here to toggle between wrapping text and unwrapping text
                     codeView.getSettings().setBuiltInZoomControls(true);
                 }
                 else
