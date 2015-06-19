@@ -2,11 +2,6 @@ package com.github.mobile.util;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
-
-import static android.content.Intent.ACTION_SEND;
-import static android.content.Intent.EXTRA_SUBJECT;
-import static android.content.Intent.EXTRA_TEXT;
 
 /**
  * Created by jaellysbales on 6/19/15.
