@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2012 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,22 +14,26 @@
   limitations under the License.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <item
-    android:id="@+id/m_wrap"
-    app:showAsAction="never"
-    android:title="@string/enable_wrapping"/>
-  <item
-    android:id="@+id/m_render_markdown"
-    android:enabled="false"
-    app:showAsAction="never"
-    android:title="@string/render_markdown"
-    android:visible="false"/>
-  <item
-    android:id="@+id/m_share"
-    android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
-    app:showAsAction="never"
-    android:title="@string/share"/>
+    <item
+        android:id="@+id/m_wrap"
+        android:title="@string/enable_wrapping"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/m_render_markdown"
+        android:enabled="false"
+        android:title="@string/render_markdown"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/m_share"
+        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+        android:title="@string/share"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/m_open_in_browser"
+        android:title="@string/open_in_browser"
+        app:showAsAction="never" />
 
 </menu>
