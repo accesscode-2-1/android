@@ -1,6 +1,6 @@
 package com.github.mobile.ui;
 
-import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
@@ -29,10 +30,12 @@ import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import org.eclipse.egit.github.core.User;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
     LoaderManager.LoaderCallbacks<List<User>> {
@@ -169,6 +172,26 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         fragment.setArguments(args);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.container, fragment).commit();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.initial_dialog);
+        dialog.setTitle("How to navigate");
+
+        Button button = (Button) dialog.findViewById(R.id.Button01);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }

@@ -37,6 +37,8 @@ public class BaseActivity extends RoboActionBarActivity {
         super.onCreate(savedInstanceState);
 
         finder = new ViewFinder(this);
+
+
     }
 
     /**

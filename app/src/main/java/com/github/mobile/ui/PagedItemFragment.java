@@ -63,6 +63,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
         super.onCreate(savedInstanceState);
 
         pager = createPager();
+        
     }
 
     /**
