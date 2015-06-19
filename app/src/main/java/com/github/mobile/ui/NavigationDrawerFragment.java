@@ -3,11 +3,17 @@ package com.github.mobile.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
@@ -49,6 +56,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private ImageView userImage;
     private TextView userRealName;
     private TextView userName;
+    private static final int IMAGE_PICKER_SELECT = 999;
 
     public NavigationDrawerFragment() {
     }
@@ -63,6 +71,8 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
+
+
     }
 
     @Override
@@ -115,6 +125,16 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
         avatar.bind(userImage, user);
         userName.setText(user.getLogin());
+
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                startActivityForResult(i, IMAGE_PICKER_SELECT);
+            }
+
+        });
 
         String name = user.getName();
         if (name != null) {
@@ -249,4 +269,25 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         return screenSize.x - actionBarHeight;
 
     }
-}
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == IMAGE_PICKER_SELECT  && resultCode == Activity.RESULT_OK) {
+            MainActivity activity = (MainActivity)getActivity();
+            Bitmap bitmap = getBitmapFromCameraData(data, activity);
+            userImage.setImageBitmap(bitmap);
+        }
+    }
+    public static Bitmap getBitmapFromCameraData(Intent data, Context context){
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+        return BitmapFactory.decodeFile(picturePath);
+    }
+
+ }
