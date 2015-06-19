@@ -161,9 +161,12 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             case 4:
                 fragment = new FilterListFragment();
                 break;
+            case 5:
+                fragment = new IssueDashboardPagerFragment();
+                break;
             default:
                 fragment = new HomePagerFragment();
-                args.putSerializable("org", orgs.get(position - 6));
+                args.putSerializable("org", orgs.get(position - 7));
                 break;
         }
         fragment.setArguments(args);
