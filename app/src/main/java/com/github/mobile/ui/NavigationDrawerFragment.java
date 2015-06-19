@@ -3,11 +3,17 @@ package com.github.mobile.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -49,6 +55,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private ImageView userImage;
     private TextView userRealName;
     private TextView userName;
+    private int ACTIVITY_SELECT_IMAGE;
 
     public NavigationDrawerFragment() {
     }
@@ -63,6 +70,8 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
+
+
     }
 
     @Override
@@ -115,6 +124,18 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
         avatar.bind(userImage, user);
         userName.setText(user.getLogin());
+
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                //ACTIVITY_SELECT_IMAGE = 1234;
+                i.putExtra("image",ACTIVITY_SELECT_IMAGE);
+                startActivityForResult(i, 0);
+            }
+
+        });
 
         String name = user.getName();
         if (name != null) {
@@ -249,4 +270,24 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         return screenSize.x - actionBarHeight;
 
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if(requestCode == 0)
+        {
+            if(data != null)
+            {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                photo = Bitmap.createScaledBitmap(photo, 80, 80, false);
+                userImage.setImageBitmap(photo);
+            }
+            else{
+            }
+        }
+    }
+
+
+
 }

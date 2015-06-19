@@ -99,6 +99,7 @@
     <string name="news">News</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
+    <string name="sign_out">Sign Out</string>
     <string name="commits">Commits</string>
     <string name="global_search">GitHub search</string>
     <string name="find_repositories">Find Repositories</string>

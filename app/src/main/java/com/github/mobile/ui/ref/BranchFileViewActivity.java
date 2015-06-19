@@ -177,9 +177,12 @@ public class BranchFileViewActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_wrap:
-                if (editor.getWrap())
+
+                //enable textWrapping
+                if (editor.getWrap()){
                     item.setTitle(R.string.enable_wrapping);
-                else
+                codeView.getSettings().setBuiltInZoomControls(true);
+           }        else
                     item.setTitle(R.string.disable_wrapping);
                 editor.toggleWrap();
                 PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
