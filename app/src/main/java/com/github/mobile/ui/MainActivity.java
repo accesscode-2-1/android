@@ -1,6 +1,6 @@
 package com.github.mobile.ui;
 
-import static com.github.mobile.RequestCodes.REPOSITORY_VIEW;
+import static com.github.mobile.RequestCodes.ISSUE_CREATE;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.app.SearchManager;
 import android.content.Context;
@@ -22,10 +22,10 @@ import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsPagerFragment;
+import com.github.mobile.ui.issue.EditIssueActivity;
 import com.github.mobile.ui.issue.FilterListFragment;
 import com.github.mobile.ui.issue.IssueDashboardPagerFragment;
 import com.github.mobile.ui.repo.OrganizationLoader;
-import com.github.mobile.ui.repo.RepositoryViewActivity;
 import com.github.mobile.ui.user.HomePagerFragment;
 import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -170,8 +170,9 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                         .setOwner(new User().setLogin("forkHubs"))
                         .setHasIssues(true);
 
-                startActivityForResult(RepositoryViewActivity.createIntent(repo),
-                        REPOSITORY_VIEW);
+                startActivityForResult(EditIssueActivity.createIntent(repo),
+                        ISSUE_CREATE);
+
                 return;
             default:
                 fragment = new HomePagerFragment();
