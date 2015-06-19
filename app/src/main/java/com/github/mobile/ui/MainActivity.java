@@ -1,5 +1,6 @@
 package com.github.mobile.ui;
 
+import static com.github.mobile.RequestCodes.ISSUE_CREATE;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.app.SearchManager;
 import android.content.Context;
@@ -21,6 +22,7 @@ import com.github.mobile.accounts.AccountUtils;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsPagerFragment;
+import com.github.mobile.ui.issue.EditIssueActivity;
 import com.github.mobile.ui.issue.FilterListFragment;
 import com.github.mobile.ui.issue.IssueDashboardPagerFragment;
 import com.github.mobile.ui.repo.OrganizationLoader;
@@ -32,6 +34,7 @@ import com.google.inject.Provider;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -161,9 +164,19 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             case 4:
                 fragment = new FilterListFragment();
                 break;
+            case 5:
+                Repository repo = new Repository();
+                repo.setName("android")
+                        .setOwner(new User().setLogin("forkHubs"))
+                        .setHasIssues(true);
+
+                startActivityForResult(EditIssueActivity.createIntent(repo),
+                        ISSUE_CREATE);
+
+                return;
             default:
                 fragment = new HomePagerFragment();
-                args.putSerializable("org", orgs.get(position - 6));
+                args.putSerializable("org", orgs.get(position - 7));
                 break;
         }
         fragment.setArguments(args);
