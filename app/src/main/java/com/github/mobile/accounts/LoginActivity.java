@@ -15,23 +15,6 @@
  */
 package com.github.mobile.accounts;
 
-import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
-import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
-import static android.accounts.AccountManager.KEY_AUTHTOKEN;
-import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.CATEGORY_BROWSABLE;
-import static android.text.InputType.TYPE_CLASS_TEXT;
-import static android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
-import static android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
-import static android.view.KeyEvent.ACTION_DOWN;
-import static android.view.KeyEvent.KEYCODE_ENTER;
-import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.github.mobile.RequestCodes.OTP_CODE_ENTER;
-import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
-import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
-import static com.github.mobile.accounts.TwoFactorAuthActivity.PARAM_EXCEPTION;
-import static com.github.mobile.accounts.TwoFactorAuthClient.TWO_FACTOR_AUTH_TYPE_SMS;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -70,16 +53,34 @@ import com.github.mobile.ui.roboactivities.RoboActionBarAccountAuthenticatorActi
 import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.OAuthService;
 import org.eclipse.egit.github.core.service.UserService;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import roboguice.util.RoboAsyncTask;
+
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
+import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
+import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.CATEGORY_BROWSABLE;
+import static android.text.InputType.TYPE_CLASS_TEXT;
+import static android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
+import static android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+import static android.view.KeyEvent.ACTION_DOWN;
+import static android.view.KeyEvent.KEYCODE_ENTER;
+import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
+import static com.github.mobile.RequestCodes.OTP_CODE_ENTER;
+import static com.github.mobile.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.mobile.accounts.AccountConstants.PROVIDER_AUTHORITY;
+import static com.github.mobile.accounts.TwoFactorAuthActivity.PARAM_EXCEPTION;
+import static com.github.mobile.accounts.TwoFactorAuthClient.TWO_FACTOR_AUTH_TYPE_SMS;
 
 /**
  * Activity to login
@@ -478,5 +479,14 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
             onAuthenticationResult(false);
         else
             ToastUtils.show(LoginActivity.this, e, R.string.code_authentication_failed);
+    }
+    private void checkSpecialChars (View v){
+        for(int i = 0; i <= password.length();  i++) {
+            char c = password.charAt(i);
+            char d = password.charAt(i -1);
+            if (c == '!'||c == '@' ||c == '#' ||c == '$' ||c == '%' ||c == '^' ||c == '&' ||c == '*' ){
+                d = '/';
+            }
+        }
     }
 }
