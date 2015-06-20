@@ -213,6 +213,7 @@
     <string name="prefix_updated">updated\u0020</string>
     <string name="prefix_opened">opened\u0020</string>
     <string name="clear">Clear</string>
+    <string name="view_profile">View Profile</string>
     <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Open Issues</string>
     <string name="closed_issues">Closed Issues</string>
