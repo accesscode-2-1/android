@@ -37,6 +37,7 @@ import com.github.mobile.ui.MarkdownLoader;
 import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.HttpImageGetter;
 import com.github.mobile.util.MarkdownUtils;
+import com.github.mobile.util.OpenBrowserUtils;
 import com.github.mobile.util.PreferenceUtils;
 import com.github.mobile.util.ShareUtils;
 import com.github.mobile.util.SourceEditor;
@@ -190,6 +191,10 @@ public class BranchFileViewActivity extends BaseActivity implements
                 shareFile();
                 return true;
 
+            case R.id.m_open_in_browser:
+                openBrowser();
+                return true;
+
             case R.id.m_render_markdown:
                 if (editor.isMarkdown()) {
                     item.setTitle(R.string.render_markdown);
@@ -245,6 +250,11 @@ public class BranchFileViewActivity extends BaseActivity implements
         String id = repo.generateId();
         startActivity(ShareUtils.create(path + " at " + branch + " on " + id,
             "https://github.com/" + id + "/blob/" + branch + '/' + path));
+    }
+
+    private void openBrowser() {
+        String id = repo.generateId();
+        startActivity(OpenBrowserUtils.create("https://github.com/" + id + "/blob/" + branch + '/' + path));
     }
 
     private void loadMarkdown() {
