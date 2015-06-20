@@ -87,7 +87,7 @@ public class ParentFragment extends PagedItemFragment<Repository> {
         return new RepositoryListAdapter<Repository>(id, getActivity().getLayoutInflater(), parentRepo) {
             @Override
             protected int[] getChildViewIds() {
-                return new int[0];
+                return new int[1];
             }
 
             @Override
