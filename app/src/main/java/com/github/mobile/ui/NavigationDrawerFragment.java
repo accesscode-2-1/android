@@ -3,19 +3,27 @@ package com.github.mobile.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.ContextMenu;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
@@ -49,6 +58,8 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private ImageView userImage;
     private TextView userRealName;
     private TextView userName;
+
+    private int PICK_IMAGE_REQUEST = 1;
 
     public NavigationDrawerFragment() {
     }
@@ -86,6 +97,32 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
     }
+    //created a floating menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater;
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.floating_context_menu, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.id_upload_image:
+                Intent intent = new Intent();
+// Show only images, no videos or anything else
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+// Always show the chooser (if there are multiple options available)
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -109,7 +146,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
 
         View header = getActivity().getLayoutInflater().inflate(R.layout.drawer_header, mDrawerListView, false);
+        //adding a context menu on user image icon
         userImage = (ImageView) header.findViewById(R.id.user_picture);
+        registerForContextMenu(userImage);
+
+
         userRealName = (TextView) header.findViewById(R.id.user_real_name);
         userName = (TextView) header.findViewById(R.id.user_name);
 
@@ -144,6 +185,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
                 getActivity().supportInvalidateOptionsMenu();
             }
+
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -206,7 +248,15 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
-
+     //Result activity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            userImage.setImageBitmap(imageBitmap);
+        }
+    }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
