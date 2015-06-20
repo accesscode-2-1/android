@@ -50,6 +50,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     private SearchUserListFragment userFragment;
 
+    // TODO Find the "FIND REPOSITORIES" method that work on my phone and make it work
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
