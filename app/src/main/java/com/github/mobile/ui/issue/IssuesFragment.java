@@ -139,10 +139,16 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     private void updateFilterSummary() {
-        if (filter.isOpen())
+        if (filter.isOpen()) {
             state.setText(R.string.open_issues);
-        else
+            state.append(" : " + repository.getOpenIssues());
+        }
+
+        else {
             state.setText(R.string.closed_issues);
+            state.append(" : ");
+        }
+
 
         Collection<Label> filterLabels = filter.getLabels();
         if (filterLabels != null && !filterLabels.isEmpty()) {
