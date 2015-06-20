@@ -1,6 +1,5 @@
 package com.github.mobile.ui;
 
-import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,10 +28,12 @@ import com.github.mobile.util.AvatarLoader;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import org.eclipse.egit.github.core.User;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.egit.github.core.User;
+import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
     LoaderManager.LoaderCallbacks<List<User>> {
@@ -161,6 +162,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             case 4:
                 fragment = new FilterListFragment();
                 break;
+            case 5:
+                fragment = new SettingsFragment();
             default:
                 fragment = new HomePagerFragment();
                 args.putSerializable("org", orgs.get(position - 6));
