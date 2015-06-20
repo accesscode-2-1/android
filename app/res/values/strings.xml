@@ -288,6 +288,7 @@
     <string name="render_markdown">Render markdown</string>
     <string name="copy_hash">Copy hash</string>
     <string name="toast_msg_copied">Copied to clipboard</string>
+    <string name="open_in_browser">Open in Browser</string>
 
     <!-- Navigation drawer strings -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
