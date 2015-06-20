@@ -60,6 +60,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private TextView userName;
 
     private int PICK_IMAGE_REQUEST = 1;
+    private String mCurrentPhotoPath;
 
     public NavigationDrawerFragment() {
     }
@@ -97,6 +98,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
     }
+
     //created a floating menu
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -105,6 +107,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.floating_context_menu, menu);
     }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -123,7 +126,6 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -136,7 +138,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout, NavigationDrawerAdapter adapter, AvatarLoader avatar,
-        User user) {
+                      User user) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -173,9 +175,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         actionBar.setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-            getActivity(), mDrawerLayout,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close) {
+                getActivity(), mDrawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -197,7 +199,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
-                        .getDefaultSharedPreferences(getActivity());
+                            .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
 
@@ -248,7 +250,8 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
-     //Result activity
+
+    //Result activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -257,6 +260,32 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
             userImage.setImageBitmap(imageBitmap);
         }
     }
+
+     // Scale user Image Icon
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = userImage.getWidth();
+        int targetH = userImage.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        userImage.setImageBitmap(bitmap);
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -278,11 +307,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     public boolean checkTabletOrLandscape() {
         boolean landscape = getActivity().getResources()
-                                         .getConfiguration()
-                                         .orientation == Configuration.ORIENTATION_LANDSCAPE;
+                .getConfiguration()
+                .orientation == Configuration.ORIENTATION_LANDSCAPE;
         boolean tablet =
                 (getActivity().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
-                == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE;
 
         return landscape || tablet;
     }
