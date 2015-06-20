@@ -15,9 +15,6 @@
  */
 package com.github.mobile.ui.code;
 
-import static android.app.Activity.RESULT_OK;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import static com.github.mobile.RequestCodes.REF_UPDATE;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -53,13 +50,19 @@ import com.github.mobile.util.ToastUtils;
 import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
 
-import java.util.LinkedList;
-
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.DataService;
 
+import java.util.LinkedList;
+
+import static android.app.Activity.RESULT_OK;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.RequestCodes.REF_UPDATE;
+
 /**
+ * Fixing code in this branch and Ref Dialog
+ * 
  * Fragment to display a repository's source code tree
  */
 public class RepositoryCodeFragment extends DialogFragment implements

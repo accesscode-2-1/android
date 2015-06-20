@@ -15,10 +15,6 @@
  */
 package com.github.mobile.ui.commit;
 
-import static android.app.Activity.RESULT_OK;
-import static com.github.mobile.Intents.EXTRA_REPOSITORY;
-import static com.github.mobile.RequestCodes.COMMIT_VIEW;
-import static com.github.mobile.RequestCodes.REF_UPDATE;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,8 +45,6 @@ import com.github.mobile.util.AvatarLoader;
 import com.github.mobile.util.TypefaceUtils;
 import com.google.inject.Inject;
 
-import java.util.List;
-
 import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
@@ -59,6 +53,13 @@ import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.DataService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+import static com.github.mobile.Intents.EXTRA_REPOSITORY;
+import static com.github.mobile.RequestCodes.COMMIT_VIEW;
+import static com.github.mobile.RequestCodes.REF_UPDATE;
 
 /**
  * Fragment to display a list of repository commits
