@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import com.github.mobile.ui.NavigationDrawerFragment;
 import com.google.inject.Key;
 
 import java.util.HashMap;
@@ -126,9 +127,11 @@ public class RoboActionBarActivity extends ActionBarActivity implements RoboCont
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, Intent data ) {
+        if (requestCode == 2 & requestCode ==1) {
+            super.onActivityResult(requestCode, resultCode, data);
 
-        super.onActivityResult( requestCode, resultCode, data );
-        eventManager.fire( new OnActivityResultEvent( requestCode, resultCode, data ) );
+            eventManager.fire(new OnActivityResultEvent(requestCode, resultCode, data));
+        }
     }
 
     @Override

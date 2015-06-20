@@ -15,7 +15,14 @@
  */
 package com.github.mobile.ui.user;
 
+import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.mobile.R;
@@ -28,7 +35,11 @@ import org.eclipse.egit.github.core.User;
  */
 public class UserListAdapter extends SingleTypeAdapter<User> {
 
+
     private final AvatarLoader avatars;
+
+
+
 
     /**
      * Create user list adapter
@@ -37,6 +48,9 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
      * @param elements
      * @param avatars
      */
+
+
+
     public UserListAdapter(final LayoutInflater inflater,
             final User[] elements, final AvatarLoader avatars) {
         super(inflater, R.layout.user_item);
@@ -60,4 +74,11 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
         avatars.bind(imageView(0), user);
         setText(1, user.getLogin());
     }
+
+
+
+
+
+
+
 }

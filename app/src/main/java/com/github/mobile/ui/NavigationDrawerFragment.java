@@ -3,19 +3,27 @@ package com.github.mobile.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.ContextMenu;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mobile.R;
 import com.github.mobile.util.AvatarLoader;
@@ -49,6 +58,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     private ImageView userImage;
     private TextView userRealName;
     private TextView userName;
+
+    private int PICK_IMAGE_REQUEST = 1;
+    private String mCurrentPhotoPath;
 
     public NavigationDrawerFragment() {
     }
@@ -87,6 +99,33 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
     }
 
+    //created a floating menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater;
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.floating_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.id_upload_image:
+                Intent intent = new Intent();
+// Show only images, no videos or anything else
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+// Always show the chooser (if there are multiple options available)
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -99,7 +138,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout, NavigationDrawerAdapter adapter, AvatarLoader avatar,
-        User user) {
+                      User user) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -109,7 +148,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
 
         View header = getActivity().getLayoutInflater().inflate(R.layout.drawer_header, mDrawerListView, false);
+        //adding a context menu on user image icon
         userImage = (ImageView) header.findViewById(R.id.user_picture);
+        registerForContextMenu(userImage);
+
+
         userRealName = (TextView) header.findViewById(R.id.user_real_name);
         userName = (TextView) header.findViewById(R.id.user_name);
 
@@ -132,9 +175,9 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         actionBar.setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-            getActivity(), mDrawerLayout,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close) {
+                getActivity(), mDrawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -144,6 +187,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
                 getActivity().supportInvalidateOptionsMenu();
             }
+
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -155,7 +199,7 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
-                        .getDefaultSharedPreferences(getActivity());
+                            .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
 
@@ -207,6 +251,46 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
+    //Result activity
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                setPic();
+                userImage.setImageBitmap(imageBitmap);
+
+            }gi
+
+        }
+    }
+
+     // Scale user Image Icon
+    public void setPic() {
+        // Get the dimensions of the View
+        int targetW = userImage.getWidth();
+        int targetH = userImage.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        userImage.setImageBitmap(bitmap);
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -228,11 +312,11 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
 
     public boolean checkTabletOrLandscape() {
         boolean landscape = getActivity().getResources()
-                                         .getConfiguration()
-                                         .orientation == Configuration.ORIENTATION_LANDSCAPE;
+                .getConfiguration()
+                .orientation == Configuration.ORIENTATION_LANDSCAPE;
         boolean tablet =
                 (getActivity().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
-                == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE;
 
         return landscape || tablet;
     }
