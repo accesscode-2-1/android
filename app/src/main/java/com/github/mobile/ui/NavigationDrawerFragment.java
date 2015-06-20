@@ -252,17 +252,22 @@ public class NavigationDrawerFragment extends Fragment implements AdapterView.On
     }
 
     //Result activity
-    @Override
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            userImage.setImageBitmap(imageBitmap);
+        if (requestCode == 1) {
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                setPic();
+                userImage.setImageBitmap(imageBitmap);
+
+            }gi
+
         }
     }
 
      // Scale user Image Icon
-    private void setPic() {
+    public void setPic() {
         // Get the dimensions of the View
         int targetW = userImage.getWidth();
         int targetH = userImage.getHeight();
