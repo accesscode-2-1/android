@@ -37,10 +37,12 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         createData();
     }
 
+    //TODO
+    //Add link to view personal profile
     private void createData() {
         orgs.remove(0);
         String[] names = new String[] { context.getString(R.string.home), context.getString(R.string.gist),
-            context.getString(R.string.issue_dashboard), context.getString(R.string.bookmarks) };
+            context.getString(R.string.issue_dashboard), context.getString(R.string.bookmarks), "Profile" };
         String[] icons = context.getResources().getStringArray(R.array.navigation_drawer_icon_list);
         data = new ArrayList<>();
         int amount = names.length + orgs.size() + 2;
