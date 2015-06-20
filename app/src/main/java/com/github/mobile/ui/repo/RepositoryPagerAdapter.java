@@ -41,11 +41,19 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
      */
     public static final int ITEM_COMMITS = 2;
 
+    /**
+     * Index of parent page
+     */
+    public static final int ITEM_PARENT = 3;
+
+
     private final Resources resources;
 
     private final boolean hasIssues;
 
     private RepositoryCodeFragment codeFragment;
+
+    private ParentFragment parentFragment;
 
     private CommitListFragment commitsFragment;
 
@@ -73,6 +81,8 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
         case 2:
             return resources.getString(R.string.tab_commits);
         case 3:
+            return "Parent";
+        case 4:
             return resources.getString(R.string.tab_issues);
         default:
             return null;
@@ -91,6 +101,9 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
             commitsFragment = new CommitListFragment();
             return commitsFragment;
         case 3:
+            parentFragment = new ParentFragment();
+            return parentFragment;
+        case 4:
             return new IssuesFragment();
         default:
             return null;
@@ -99,7 +112,7 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return hasIssues ? 4 : 3;
+        return hasIssues ? 5 : 4;
     }
 
     /**
@@ -125,6 +138,8 @@ public class RepositoryPagerAdapter extends FragmentPagerAdapter {
         if (position == ITEM_CODE && codeFragment != null)
             codeFragment.onDialogResult(requestCode, resultCode, arguments);
         else if (position == ITEM_COMMITS && commitsFragment != null)
+            commitsFragment.onDialogResult(requestCode, resultCode, arguments);
+        else if (position == ITEM_PARENT && commitsFragment != null)
             commitsFragment.onDialogResult(requestCode, resultCode, arguments);
 
         return this;
