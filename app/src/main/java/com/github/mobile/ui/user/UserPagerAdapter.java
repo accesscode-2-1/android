@@ -79,6 +79,6 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     /**
      * In this class we would also tell he pager adapter to request
      * the return of the 'settings' option.
-     * We might need to also create a fragment for the info. 
+     * We might need to also create a fragment for the info.
      */
 }

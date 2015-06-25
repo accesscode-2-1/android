@@ -46,7 +46,6 @@ import java.util.List;
 import org.eclipse.egit.github.core.Authorization;
 import org.eclipse.egit.github.core.service.OAuthService;
 
-//I'm guessing this authenticates the account for the user.
 
 public class AccountAuthenticator extends AbstractAccountAuthenticator {
 
