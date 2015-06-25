@@ -38,4 +38,6 @@ public class AccountAuthenticatorService extends Service {
             AUTHENTICATOR = new AccountAuthenticator(this);
         return AUTHENTICATOR;
     }
+    //I'm guessing this authenticates the account as well. I wish I didn't have to guess. Well
+    //on to the joyous feeling of discovery I travel.
 }

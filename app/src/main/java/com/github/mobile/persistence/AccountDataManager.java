@@ -49,6 +49,8 @@ import org.eclipse.egit.github.core.User;
  */
 public class AccountDataManager {
 
+
+
     private static final String TAG = "AccountDataManager";
 
     private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
@@ -194,6 +196,8 @@ public class AccountDataManager {
         return Collections.emptyList();
     }
 
+
+
     /**
      * Get bookmarked issue filters
      *
@@ -304,4 +308,11 @@ public class AccountDataManager {
             }
         }.execute();
     }
+
+    /**
+     * I'm assuming this class would be a good place to put in the code
+     * that would also make the request to get and set the information for the user's profile
+     * settings.
+     **/
+
 }
