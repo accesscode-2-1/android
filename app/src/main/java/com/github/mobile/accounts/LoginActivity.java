@@ -54,6 +54,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -170,6 +171,20 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
         ViewFinder finder = new ViewFinder(this);
         loginText = finder.find(R.id.et_login);
         passwordText = finder.find(R.id.et_password);
+
+       //This is where I'd put a logout button. Great for a user with multiple Github accounts!
+
+//       ViewFinder addingLogOut = new ViewFinder(this);
+//       addingLogOut = finder.find(R.id.et_logout);
+//       Button logout = (Button)findViewById(R.id.logOut);
+//       logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+
+
 
         final Intent intent = getIntent();
         username = intent.getStringExtra(PARAM_USERNAME);
