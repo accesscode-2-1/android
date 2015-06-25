@@ -3,6 +3,7 @@ package com.github.mobile.ui;
 import static com.github.mobile.ui.NavigationDrawerObject.TYPE_SEPERATOR;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.view.Window;
 
 import com.github.mobile.R;
 import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.LoginActivity;
 import com.github.mobile.core.user.UserComparator;
 import com.github.mobile.persistence.AccountDataManager;
 import com.github.mobile.ui.gist.GistsPagerFragment;
@@ -161,6 +163,9 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             case 4:
                 fragment = new FilterListFragment();
                 break;
+            case 5:
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
             default:
                 fragment = new HomePagerFragment();
                 args.putSerializable("org", orgs.get(position - 6));
