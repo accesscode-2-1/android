@@ -21,8 +21,13 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AccountsException;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.github.mobile.R;
 
 import java.io.IOException;
 
@@ -92,3 +97,30 @@ public class GitHubAccount {
         return getClass().getSimpleName() + '[' + account.name + ']';
     }
 }
+
+// prepare intent which is triggered if the
+// notification is selected
+
+Intent intent = new Intent(this, NotificationReceiver.class);
+PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+// build notification
+// the addAction re-use the same intent to keep the example short
+Notification n = new Notification.Builder(this)
+        .setContentTitle("A pull request " + "has been merged")
+        .setContentText("Github")
+        .setSmallIcon(R.drawable.ic_stat_github)
+        .setContentIntent(pIntent)
+        .setAutoCancel(true)
+         .build();
+
+
+NotificationManager notificationManager =
+        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+private class Intent {
+    public Intent(GitHubAccount gitHubAccount, Class<NotificationReceiver> notificationReceiverClass) {
+    }
+}
+
+notificationManager.notify(0, n);
