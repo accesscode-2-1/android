@@ -129,6 +129,7 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
             return cache.getOrgs(true);
         }
     }
+    private boolean isLoggingOut;
 
     private AccountManager accountManager;
 
@@ -284,6 +285,30 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
         super.startActivity(intent);
     }
 
+    public static class LogOut {
+        private static LogOut logOut;
+
+        private boolean isLoggingOut;
+
+        private LogOut() {
+        }
+
+        public static LogOut getLogOut() {
+            if (logOut == null) {
+                logOut = new LogOut();
+            }
+            return logOut;
+        }
+
+        public boolean isLoggingOut() {
+            return isLoggingOut;
+        }
+
+        public void setLoggingOut(boolean isLoggingOut) {
+            this.isLoggingOut = isLoggingOut;
+        }
+    }
+
     /**
      * Authenticate login & password
      */
@@ -390,6 +415,10 @@ public class LoginActivity extends RoboActionBarAccountAuthenticatorActivity {
         intent.putExtra(KEY_BOOLEAN_RESULT, result);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
+        finish();
+
+        Intent logOutIntent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
         finish();
     }
 
