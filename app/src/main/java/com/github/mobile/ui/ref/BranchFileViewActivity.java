@@ -176,17 +176,26 @@ public class BranchFileViewActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.m_wrap:
-                if (editor.getWrap())
-                    item.setTitle(R.string.enable_wrapping);
-                else
-                    item.setTitle(R.string.disable_wrapping);
-                editor.toggleWrap();
-                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(WRAP, editor.getWrap()));
-                return true;
+             case R.id.m_wrap:
+   // editor = new SourceEditor(codeView);
+                 if (editor.getWrap()) {
+                 item.setTitle(R.string.enable_wrapping);
+    }
+    else {
+        item.setTitle(R.string.disable_wrapping);
+    }
+        editor.toggleWrap();
+        codeView.getSettings().setBuiltInZoomControls(true);
+        codeView.getSettings().setUseWideViewPort(true);
 
-            case R.id.m_share:
+    //editor.toggleWrap();
+    PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
+            .edit().putBoolean(WRAP, editor.getWrap()));
+    loadContent();
+    return true;
+
+
+    case R.id.m_share:
                 shareFile();
                 return true;
 
