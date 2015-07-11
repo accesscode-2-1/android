@@ -27,11 +27,11 @@ import com.github.mobile.util.ToastUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import org.eclipse.egit.github.core.User;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-
-import org.eclipse.egit.github.core.User;
 
 /**
  * Load of a {@link List} or {@link User} organizations
@@ -70,7 +70,7 @@ public class OrganizationLoader extends AuthenticatedUserLoader<List<User>> {
     public List<User> load(final Account account) {
         List<User> orgs;
         try {
-            orgs = accountDataManager.getOrgs(false);
+            orgs = accountDataManager.getOrgs(true);
         } catch (final IOException e) {
             Log.e(TAG, "Exception loading organizations", e);
             ToastUtils.show(activity, e, R.string.error_orgs_load);
